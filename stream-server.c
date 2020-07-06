@@ -45,6 +45,10 @@ int main (int argc, char** argv)
                 log("write (STDOUT) ok");
             }
 
+            for (int i=0; i < strlen(buf); ++i) {
+                buf[i]++;
+            }
+
             if (write(cli_fd, buf, bytes) != bytes) {
                 err_sys("write error");
             } else {
