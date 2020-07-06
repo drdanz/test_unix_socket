@@ -10,6 +10,8 @@ int main(int argc, char** argv)
 
     if ((srv_fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
         err_sys("socket error");
+    } else {
+        log("socket ok");
     }
 
     memset(&addr, 0, sizeof(struct sockaddr_un));
@@ -18,16 +20,33 @@ int main(int argc, char** argv)
 
     if (connect(srv_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_un)) < 0) {
         err_sys("connect error");
+    } else {
+        log("connect ok");
     }
 
     while ((bytes = read(STDIN_FILENO, buf, BUFFSIZE)) > 0) {
         if (write(srv_fd, buf, bytes) != bytes) {
             err_sys("write error");
+        } else {
+            log("write ok");
+        }
+
+        if ((read(srv_fd, buf, BUFFSIZE)) > 0) {
+            log("read ok")
+            if (write(STDOUT_FILENO, buf, bytes) != bytes) {
+                err_sys ("write (STDOUT) error");
+            } else {
+                log("write ok");
+            }
+        } else {
+            log("read error");
         }
     }
 
     if (bytes < 0) {
-        err_sys("read error");
+        err_sys("read (STDIN) error");
+    } else {
+        log("read (STDIN) ok");
     }
 
     exit(EXIT_SUCCESS);

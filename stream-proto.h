@@ -11,3 +11,5 @@
 
 #include <stdio.h>
 #define err_sys(x) fprintf(stderr, x "\n")
+// #define log(x) printf(x "\n")
+#define log(x)
